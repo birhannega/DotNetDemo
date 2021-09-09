@@ -12,5 +12,6 @@ namespace Contracts
         public ResponseModel<Employee> Get(int id);
         public Task<bool> Update(int id,Employee employee);
         public ResponseModel<Employee> Delete(int id);
+        
     }
 }
