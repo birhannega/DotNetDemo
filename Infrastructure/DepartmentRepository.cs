@@ -76,5 +76,15 @@ namespace Infrastructure
              _dbContext.SaveChangesAsync();
             return 1;
         }
+
+        bool IDepartment.Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        ResponseModel<Department> IDepartment.Get(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
