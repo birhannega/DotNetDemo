@@ -9,7 +9,7 @@ namespace Contracts
         public int Create(Department department);  
         public int Update(int id,Department department);        
         public ResponseModel<Department> GetAll();
-        public ResponseModel<Department> Get(int id);  
+        public Department Get(int id);  
         public ResponseModel<Department> Delete(int id);
        
     }
