@@ -28,7 +28,7 @@ namespace API.Controllers
         {
             return _departmentService.GetAll();
         }
-
+        
         [HttpDelete]
         public ResponseModel<Department> Delete(int id)
         {

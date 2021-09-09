@@ -18,9 +18,9 @@ namespace Infrastructure
             _departmentValidator = new DepartmentValidator(_dbContext);
         }
         public int Create(Department department)
+
         {
-           
-            _dbContext.Departments.Add(department);
+             _dbContext.Departments.Add(department);
              _dbContext.SaveChanges();
             return department.DepartmentId;
         }
@@ -65,8 +65,7 @@ namespace Infrastructure
            };
           
         }
-
-        public int Update(int id, Department department)
+                public int Update(int id, Department department)
         {
             Department oldData = Get(id);
             if (oldData is null)
