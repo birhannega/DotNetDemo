@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataModel.DTO
 {
-   public class CreateEmployeeDto
+  public class CreateEmployeeDto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

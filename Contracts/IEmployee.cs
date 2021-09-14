@@ -1,11 +1,11 @@
-﻿using DataModel;
-using DataModel.common;
-using System.Collections.Generic;
+﻿using DataModel.common;
+using DataModel.DTO;
+using DataModel.Entity;
 using System.Threading.Tasks;
 
 namespace Contracts
 {
-  public interface IEmployee
+    public interface IEmployee
     {
         public ResponseModel<Employee> Create(DataModel.DTO.CreateEmployeeDto employee);
         public ResponseModel<Employee> GetAll();
