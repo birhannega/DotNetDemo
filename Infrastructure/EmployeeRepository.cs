@@ -1,6 +1,8 @@
 ﻿using Contracts;
 using DataModel;
 using DataModel.common;
+using DataModel.DTO;
+using DataModel.Entity;
 using Infrastructure.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +20,7 @@ namespace Infrastructure
             _dbContext = dbContext;
             _employeeValidator = new EmployeeValidator(_dbContext);   
         }
-         public ResponseModel<Employee> Create(Employee employee)
+         public ResponseModel<Employee> Create(CreateEmployeeDto employee)
         {
             var response = new ResponseModel<Employee>();
             var result = _employeeValidator.Validate(employee);
@@ -34,6 +36,18 @@ namespace Infrastructure
                 };
                 return response;
             }
+            var newEmployee = new Employee()
+            {
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                DepartmentId = employee.DepartmentId,
+                Gender = employee.Gender,  
+                BirthDate = employee.BirthDate,
+                
+
+
+            };
+
            _dbContext.Add(employee);
            _dbContext.SaveChanges();
 
@@ -42,7 +56,7 @@ namespace Infrastructure
             response.TotalCount = 1;
             response.Data = new List<Employee>()
             {
-            _dbContext.Employees.Find(employee.Id)
+            _dbContext.Employees.Find(newEmployee.Id)
             };
             return response;
 
