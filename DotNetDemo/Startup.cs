@@ -8,7 +8,6 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure;
 using Contracts;
-using AutoMapper;
 using DataModel.Entity;
 using DataModel.DTO;
 using API.helper;
@@ -29,12 +28,12 @@ namespace DotNetDemo
         {
 
             services.AddControllers();
-            var configuration = new MapperConfiguration(cfg => {
-                cfg.AddProfile<MappingProfile>();
+            //var configuration = new MapperConfiguration(cfg => {
+            //    cfg.AddProfile<MappingProfile>();
 
-            });
+            //});
 
-            services.AddAutoMapper(typeof(MappingProfile));
+            //services.AddAutoMapper(typeof(MappingProfile));
             services.AddDbContext<EmployeeDbContext>(opt =>
                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
