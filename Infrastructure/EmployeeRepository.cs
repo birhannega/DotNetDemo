@@ -48,7 +48,7 @@ namespace Infrastructure
 
             };
 
-           _dbContext.Add(employee);
+           _dbContext.Employees.Add(newEmployee);
            _dbContext.SaveChanges();
 
             response.Success=true; 

@@ -32,8 +32,7 @@ namespace DotNetDemo
             services.AddScoped(typeof(DbContext), typeof(EmployeeDbContext));
             services.AddScoped(typeof(IEmployee), typeof(EmployeeRepository));
             services.AddScoped(typeof(IDepartment), typeof(DepartmentRepository));
-
-            services.AddSwaggerGen(c =>
+                       services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Dot Net Demo", Version = "v1", Contact= new OpenApiContact() {Name="Back end team" }, Description="This is demo api project" });
             });
