@@ -25,7 +25,7 @@ namespace Infrastructure.Validators
 
         private bool BeUniqueName(string name)
         {
-           return _dbcontext.Departments.Where(x=>x.DepartmentName==name).Any();
+           return ! _dbcontext.Departments.Where(x=>x.DepartmentName==name).Any();
         }
     }
 }

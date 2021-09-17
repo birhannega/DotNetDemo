@@ -41,6 +41,7 @@ namespace DotNetDemo
             services.AddScoped(typeof(DbContext), typeof(EmployeeDbContext));
             services.AddScoped(typeof(IEmployee), typeof(EmployeeRepository));
             services.AddScoped(typeof(IDepartment), typeof(DepartmentRepository));
+            services.AddScoped(typeof(IAddress), typeof(AddressRepository));
 
             services.AddSwaggerGen(c =>
             {
