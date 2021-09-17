@@ -29,8 +29,7 @@ namespace Infrastructure.Validators
                 .MaximumLength(6)
                 .When(x=>x.Gender!=null);
         }
-
-        private bool BeValidDepartmentId(int departmentId)
+                private bool BeValidDepartmentId(int departmentId)
         {
             return _dbcontext.Departments.Where(x => x.DepartmentId == departmentId).Any();
         }

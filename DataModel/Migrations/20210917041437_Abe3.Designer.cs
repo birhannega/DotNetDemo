@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataModel.Migrations
 {
     [DbContext(typeof(EmployeeDbContext))]
-    [Migration("20210909020057_teshale")]
-    partial class teshale
+    [Migration("20210917041437_Abe3")]
+    partial class Abe3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,28 @@ namespace DataModel.Migrations
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DataModel.Department", b =>
+            modelBuilder.Entity("DataModel.Entity.Address", b =>
+                {
+                    b.Property<int>("AddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Region")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Woreda")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Zone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AddressId");
+
+                    b.ToTable("Addresses");
+                });
+
+            modelBuilder.Entity("DataModel.Entity.Department", b =>
                 {
                     b.Property<int>("DepartmentId")
                         .ValueGeneratedOnAdd()
@@ -36,7 +57,7 @@ namespace DataModel.Migrations
                     b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("DataModel.Employee", b =>
+            modelBuilder.Entity("DataModel.Entity.Employee", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,9 +104,9 @@ namespace DataModel.Migrations
                     b.ToTable("Settings");
                 });
 
-            modelBuilder.Entity("DataModel.Employee", b =>
+            modelBuilder.Entity("DataModel.Entity.Employee", b =>
                 {
-                    b.HasOne("DataModel.Department", "VDepartment")
+                    b.HasOne("DataModel.Entity.Department", "VDepartment")
                         .WithMany()
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)

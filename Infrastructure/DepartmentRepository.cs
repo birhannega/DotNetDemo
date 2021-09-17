@@ -56,8 +56,7 @@ namespace Infrastructure
                 return response;
 
             }
-
-            _dbContext.Departments.Remove(oldData);
+                        _dbContext.Departments.Remove(oldData);
             _dbContext.SaveChanges();
             response.Success = true;
             response.Data = new List<Department>()
@@ -91,10 +90,8 @@ namespace Infrastructure
                 response.TotalCount = response.Data.Count;
                 response.Error = null;
                 return response;
-            
-        }
-
-        public ResponseModel<Department> GetAll()
+                    }
+                public ResponseModel<Department> GetAll()
         {
             return new ResponseModel<Department>()
             {
@@ -111,8 +108,7 @@ namespace Infrastructure
             return await _dbContext.Employees.Where(x => x.DepartmentId == departmentId && x.Id == employeeId)
              .Include(x=>x.VDepartment).FirstOrDefaultAsync();
         }
-
-        public async Task<List<Employee>> GetEmployeesByDepartment(int companyId)
+                public async Task<List<Employee>> GetEmployeesByDepartment(int companyId)
         {
             return await  _dbContext.Employees
                 .OrderBy(x=>x.Id)
