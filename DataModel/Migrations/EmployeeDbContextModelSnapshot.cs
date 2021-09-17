@@ -26,7 +26,13 @@ namespace DataModel.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Mobile")
+                        .HasColumnType("int");
+
                     b.Property<string>("Region")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telephone")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Woreda")
