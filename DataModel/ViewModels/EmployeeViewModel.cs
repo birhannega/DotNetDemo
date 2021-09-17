@@ -10,5 +10,6 @@ namespace DataModel.ViewModels
         public string Gender { get; set; }
         public DateTimeOffset? BirthDate { get; set; }
         public string DepartmentName { get; set; }
+        public string Address { get; set; }
     }
 }

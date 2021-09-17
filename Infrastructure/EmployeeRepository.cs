@@ -39,7 +39,8 @@ namespace Infrastructure
                 LastName = employeeDto.LastName,
                 DepartmentId = employeeDto.DepartmentId,
                 Gender = employeeDto.Gender,
-                BirthDate = employeeDto.BirthDate
+                BirthDate = employeeDto.BirthDate, 
+                AddressId= employeeDto.AddressId
             };
             _dbContext.Add(newEmployee);
            _dbContext.SaveChanges();
@@ -98,6 +99,7 @@ namespace Infrastructure
             {
                 Data = _dbContext.Employees
                 .Include(x => x.VDepartment)
+                .Include(x => x.VAddress)
                 .ToList()
             };
             response.Success = response.Data.Count > 0;

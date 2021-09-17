@@ -6,7 +6,9 @@ using DataModel.ViewModels;
 using Infrastructure.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -109,16 +111,26 @@ namespace Infrastructure
 
         public async Task<EmployeeViewModel> GetEmployeeByDepartment(int departmentId, int employeeId)
         {
+
+            DateTimeFormatInfo format = new DateTimeFormatInfo
+            {
+                ShortDatePattern = "yyyy-MM-dd",
+                DateSeparator = "-"
+            };
+
             return await _dbContext.Employees.Where(x => x.DepartmentId == departmentId && x.Id == employeeId)
-             .Include(x=>x.VDepartment)
+             .Include(y=>y.VDepartment)
+             .Include(c => c.VAddress) 
+
              .Select(x=> new EmployeeViewModel()
              {
                  FirstName= x.FirstName, 
                  LastName= x.LastName,
-                 BirthDate= x.BirthDate,
-                 Gender= x.Gender, 
+                 BirthDate= Convert.ToDateTime(x.BirthDate, format),
+                 Gender = x.Gender, 
                  Id= x.Id,
-                 DepartmentName= x.VDepartment.DepartmentName
+                 DepartmentName= x.VDepartment.DepartmentName, 
+                 Address= x.VAddress.Region+","+x.VAddress.Zone+" , "+x.VAddress.Woreda
              }).FirstOrDefaultAsync();
         }
 
