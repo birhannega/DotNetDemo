@@ -1,8 +1,9 @@
-﻿using System;
+﻿using DataModel.common;
+using System;
 
 namespace DataModel.Entity
 {
-    public class Employee
+    public class Employee: BaseEntity
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
