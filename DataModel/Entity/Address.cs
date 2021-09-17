@@ -1,6 +1,8 @@
-﻿namespace DataModel.Entity
+﻿using DataModel.common;
+
+namespace DataModel.Entity
 {
-    public class Address
+    public class Address: BaseEntity
     {
         public int AddressId { get; set; }
         public string Region { get; set; }

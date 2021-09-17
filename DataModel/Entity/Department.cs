@@ -1,6 +1,8 @@
-﻿namespace DataModel.Entity
+﻿using DataModel.common;
+
+namespace DataModel.Entity
 {
-    public class Department
+    public class Department :BaseEntity
     {
         public int DepartmentId { get; set; }
         public string DepartmentName { get; set; }
