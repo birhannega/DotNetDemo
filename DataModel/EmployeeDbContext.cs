@@ -1,7 +1,6 @@
 ﻿using DataModel.Entity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System.IO;
+
 
 namespace DataModel
 {

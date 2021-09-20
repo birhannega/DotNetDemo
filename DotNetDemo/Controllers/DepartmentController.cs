@@ -25,6 +25,11 @@ namespace API.Controllers
         {
             return _departmentService.Create(department);
         }
+        [HttpPost("bulkCreate")]
+        public ResponseModel<Department> Create(Department[] department)
+        {
+            return _departmentService.BulkCreate(department);
+        }
 
         [HttpGet]
         public ResponseModel<Department> GetAll( )
