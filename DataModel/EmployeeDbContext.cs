@@ -1,6 +1,7 @@
 ﻿using DataModel.Entity;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace DataModel
 {
     public  class EmployeeDbContext: DbContext

@@ -23,6 +23,38 @@ namespace Infrastructure
             _dbContext = dbContext;
             _departmentValidator = new DepartmentValidator(_dbContext);
         }
+
+        public ResponseModel<Department> BulkCreate(Department[] department)
+        {
+            var response = new ResponseModel<Department>();
+            response.Data = new List<Department>();
+            foreach (Department item in department)
+            {
+
+
+                var validationResult = _departmentValidator.Validate(item);
+                if (!validationResult.IsValid)
+                {
+                    response.Error = new ErrorModel()
+                    {
+                        ErrorCode = 0,
+                        ErrorDescription = "We have found some validation errors",
+                        ErrorMessage = validationResult.Errors[0].ErrorMessage,
+                    };
+                    response.Success = false;
+                    response.Data = null;
+                    return response;
+                }
+                _dbContext.Departments.Add(item);
+                _dbContext.SaveChanges();
+                response.Data.Add(item);
+                response.Success = true;
+                response.Error = null;
+            }
+            response.TotalCount = response.Data.Count;
+            return response;
+        }
+
         public ResponseModel<Department> Create(Department department){
             var response=  new ResponseModel<Department>();
             var validationResult = _departmentValidator.Validate(department);
