@@ -1,11 +1,13 @@
 ﻿using Contracts;
 using DataModel;
 using DataModel.common;
+using DataModel.common.Enum;
 using DataModel.DTO;
 using DataModel.Entity;
 using Infrastructure.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,36 +24,80 @@ namespace Infrastructure
             _dbContext = dbContext;
             _employeeValidator = new EmployeeValidator(_dbContext);   
         }
-         public ResponseModel<Employee> Create(CreateEmployeeDto employeeDto)
+        public ResponseModel<Employee> Create(CreateEmployeeDto employeeDto)
         {
-            var response = new ResponseModel<Employee>();
-            var result = _employeeValidator.Validate(employeeDto);
-            if (!result.IsValid){
-                response.TotalCount = 0; 
-                response.Success = false;
-                response.Error = GetNotFoundError();
-                return response;
-            }
 
-            Employee newEmployee = new()
-            {
-                FirstName = employeeDto.FirstName,
-                LastName = employeeDto.LastName,
-                DepartmentId = employeeDto.DepartmentId,
-                Gender = employeeDto.Gender,
-                BirthDate = employeeDto.BirthDate, 
-                AddressId= employeeDto.AddressId
-            };
-            _dbContext.Add(newEmployee);
-           _dbContext.SaveChanges();
-            response.Success=true; 
-            response.Error = null;
-            response.TotalCount = 1;
-            response.Data = new List<Employee>()
-            {
-              GetEmployee(newEmployee.Id)
-            };
-            return response;
+          
+                using (var transaction = _dbContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        //insert employee info  into employee table 
+                        var response = new ResponseModel<Employee>();
+                        var result = _employeeValidator.Validate(employeeDto);
+                        if (!result.IsValid)
+                        {
+                            response.TotalCount = 0;
+                            response.Success = false;
+                            response.Error = GetNotFoundError();
+                            return response;
+                        }
+                    // insert into Address Table
+                    var address = employeeDto.EmployeeAddress;
+
+                    var empAdress = new Address()
+                    {
+                        CurrentStatus = 1,
+                        Mobile = employeeDto.EmployeeAddress.Mobile,
+                        Telephone = employeeDto.EmployeeAddress.Telephone,
+                        Zone = employeeDto.EmployeeAddress.Zone,
+                        Region = employeeDto.EmployeeAddress.Region,
+                        Woreda = address.Woreda // since address contains address object value
+                    };
+
+                    _dbContext.Addresses.Add(empAdress);
+                    _dbContext.SaveChanges();
+                    //Converting employee DTO to Employee model 
+                    Employee newEmployee = new()
+                    {
+                        FirstName = employeeDto.FirstName,
+                        LastName = employeeDto.LastName,
+                        DepartmentId = employeeDto.DepartmentId,
+                        Gender = employeeDto.Gender,
+                        BirthDate = employeeDto.BirthDate,
+                        // AddressId = employeeDto.AddressId
+                        AddressId = empAdress.AddressId,
+                        CurrentStatus = (int)EmployeeStatus.Employee_Active
+                        };
+                        // Inserting into employee table
+                        _dbContext.Add(newEmployee);
+                        _dbContext.SaveChanges();
+
+             
+                        // updating employee Address value with the new Address Id
+                        //var employeeToBeUpdated = GetEmployee(newEmployee.Id);
+
+                        //employeeToBeUpdated.AddressId = empAdress.AddressId;
+                        //_dbContext.Employees.Update(employeeToBeUpdated);
+                        //_dbContext.SaveChangesAsync();
+                    
+                        response.Success = true;
+                        response.Error = null;
+                        response.TotalCount = 1;
+                        response.Data = new List<Employee>()
+                            {
+                              GetEmployee(newEmployee.Id)
+                            };
+
+                        transaction.Commit();
+                        return response;
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        throw new Exception(ex.Message);
+                    }
+                }
         }
 
         public ResponseModel<Employee> Delete(int id)
