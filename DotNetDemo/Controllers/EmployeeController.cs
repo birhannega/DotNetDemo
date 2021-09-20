@@ -29,9 +29,9 @@ namespace API.Controllers
             return _employeeService.Create(employee);
         }
         [HttpPut]
-        public async Task<ResponseModel<Employee>> Update(int id,Employee employee)
+        public async Task<ResponseModel<Employee>> Update(Employee employee)
         {
-            return await _employeeService.Update(id,employee);
+            return await _employeeService.Update(employee);
         }
         [HttpDelete]
         public ResponseModel<Employee> Delete(int id)

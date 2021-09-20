@@ -10,7 +10,7 @@ namespace Contracts
         public ResponseModel<Employee> Create(CreateEmployeeDto employee);
         public ResponseModel<Employee> GetAll();
         public ResponseModel<Employee> Get(int id);
-        public Task<ResponseModel<Employee>> Update(int id,Employee employee);
+        public Task<ResponseModel<Employee>> Update(Employee employee);
         public ResponseModel<Employee> Delete(int id);
     }
 }

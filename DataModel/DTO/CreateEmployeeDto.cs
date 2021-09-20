@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataModel.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,5 +15,8 @@ namespace DataModel.DTO
         public DateTimeOffset? BirthDate { get; set; }
         public int DepartmentId { get; set; }
         public int AddressId { get; set; }
+        public CreateAddressDto EmployeeAddress { get; set; }
+
+
     }
 }
