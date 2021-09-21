@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 namespace DataModel.common
 {
     public class ResponseModel<T>
@@ -8,6 +7,5 @@ namespace DataModel.common
         public bool Success { get; set; }
         public ErrorModel Error { get; set; }
         public int TotalCount { get; set; }
-
     }
 }
