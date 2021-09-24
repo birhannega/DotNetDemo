@@ -23,8 +23,39 @@ namespace Infrastructure
             _dbContext = dbContext;
             _departmentValidator = new DepartmentValidator(_dbContext);
         }
-        public ResponseModel<Department> Create(Department department){
-            var response=  new ResponseModel<Department>();
+
+        public ResponseModel<Department> BulkCreate(Department[] department)
+        {
+            var response = new ResponseModel<Department>();
+            response.Data = new List<Department>();
+            foreach (Department item in department)
+            {
+                var validationResult = _departmentValidator.Validate(item);
+                if (!validationResult.IsValid)
+                {
+                    response.Error = new ErrorModel()
+                    {
+                        ErrorCode = 0,
+                        ErrorDescription = "We have found some validation errors",
+                        ErrorMessage = validationResult.Errors[0].ErrorMessage,
+                    };
+                    response.Success = false;
+                    response.Data = null;
+                    return response;
+                }
+                _dbContext.Departments.Add(item);
+                _dbContext.SaveChanges();
+                response.Data.Add(item);
+                response.Success = true;
+                response.Error = null;
+            }
+            response.TotalCount = response.Data.Count;
+            return response;
+        }
+
+        public ResponseModel<Department> Create(Department department)
+        {
+            var response = new ResponseModel<Department>();
             var validationResult = _departmentValidator.Validate(department);
             if (!validationResult.IsValid)
             {
@@ -36,11 +67,11 @@ namespace Infrastructure
                 };
                 response.Success = false;
                 response.Data = null;
-               return response;
+                return response;
             }
- 
+
             _dbContext.Departments.Add(department);
-             _dbContext.SaveChanges();
+            _dbContext.SaveChanges();
             response.Data = new List<Department>();
             response.Data.Add(department);
             response.Success = true;
@@ -48,12 +79,12 @@ namespace Infrastructure
             return response;
         }
 
-        public  ResponseModel<Department> Delete(int id)
+        public ResponseModel<Department> Delete(int id)
         {
             var response = new ResponseModel<Department>();
             //TODO
             var oldData = _dbContext.Departments.Find(id);
-            if(oldData is null)
+            if (oldData is null)
             {
                 response.Success = false;
                 return response;
@@ -87,14 +118,14 @@ namespace Infrastructure
                 return response;
             }
             //TODO refactor 
-                Department CurrentDepartment = _dbContext.Departments.FirstOrDefault(x => x.DepartmentId == id);
-                response.Data = new List<Department>();
-                response.Data.Add(CurrentDepartment);
-                response.Success = true;
-                response.TotalCount = response.Data.Count;
-                response.Error = null;
-                return response;
-            
+            Department CurrentDepartment = _dbContext.Departments.FirstOrDefault(x => x.DepartmentId == id);
+            response.Data = new List<Department>();
+            response.Data.Add(CurrentDepartment);
+            response.Success = true;
+            response.TotalCount = response.Data.Count;
+            response.Error = null;
+            return response;
+
         }
 
         public ResponseModel<Department> GetAll()
@@ -103,10 +134,10 @@ namespace Infrastructure
             {
                 Data = _dbContext.Departments.ToList(),
                 Success = true,
-                Error= null,
+                Error = null,
                 TotalCount = _dbContext.Departments.Count()
-           };
-          
+            };
+
         }
 
         public async Task<EmployeeViewModel> GetEmployeeByDepartment(int departmentId, int employeeId)
@@ -119,34 +150,34 @@ namespace Infrastructure
             };
 
             return await _dbContext.Employees.Where(x => x.DepartmentId == departmentId && x.Id == employeeId)
-             .Include(y=>y.VDepartment)
-             .Include(c => c.VAddress) 
+             .Include(y => y.VDepartment)
+             .Include(c => c.VAddress)
 
-             .Select(x=> new EmployeeViewModel()
+             .Select(x => new EmployeeViewModel()
              {
-                 FirstName= x.FirstName, 
-                 LastName= x.LastName,
-                 BirthDate= Convert.ToDateTime(x.BirthDate, format),
-                 Gender = x.Gender, 
-                 Id= x.Id,
-                 DepartmentName= x.VDepartment.DepartmentName, 
-                 Address= x.VAddress.Region+","+x.VAddress.Zone+" , "+x.VAddress.Woreda
+                 FirstName = x.FirstName,
+                 LastName = x.LastName,
+                 BirthDate = Convert.ToDateTime(x.BirthDate, format),
+                 Gender = x.Gender,
+                 Id = x.Id,
+                 DepartmentName = x.VDepartment.DepartmentName,
+                 Address = x.VAddress.Region + "," + x.VAddress.Zone + " , " + x.VAddress.Woreda
              }).FirstOrDefaultAsync();
         }
 
         public async Task<List<EmployeeViewModel>> GetEmployeesByDepartment(int deptId)
         {
-           return await _dbContext.Employees.Where(x => x.DepartmentId == deptId)
-                .Include(x => x.VDepartment)
-                .Select(x => new EmployeeViewModel()
-                    {
-                                BirthDate= x.BirthDate,
-                                Id= x.Id,
-                                FirstName= x.FirstName,
-                                LastName= x.LastName,
-                                Gender= x.Gender, 
-                                DepartmentName= x.VDepartment.DepartmentName
-                    }).ToListAsync();
+            return await _dbContext.Employees.Where(x => x.DepartmentId == deptId)
+                 .Include(x => x.VDepartment)
+                 .Select(x => new EmployeeViewModel()
+                 {
+                     BirthDate = x.BirthDate,
+                     Id = x.Id,
+                     FirstName = x.FirstName,
+                     LastName = x.LastName,
+                     Gender = x.Gender,
+                     DepartmentName = x.VDepartment.DepartmentName
+                 }).ToListAsync();
 
 
         }
@@ -164,18 +195,18 @@ namespace Infrastructure
                     ErrorDescription = "Department with the given Id is not found",
                     ErrorMessage = "Department with the given Id is not found"
                 };
-             return  response;
+                return response;
             }
             oldData.DepartmentName = department.DepartmentName;
             _dbContext.Update(oldData);
-             _dbContext.SaveChangesAsync();
+            _dbContext.SaveChangesAsync();
             Department CurrentDepartment = _dbContext.Departments.FirstOrDefault(x => x.DepartmentId == id);
             response.Data = new List<Department>();
             response.Data.Add(CurrentDepartment);
             response.Success = true;
             response.TotalCount = response.Data.Count;
             response.Error = null;
-            return response; 
+            return response;
         }
     }
 }

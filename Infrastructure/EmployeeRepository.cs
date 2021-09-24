@@ -17,12 +17,12 @@ namespace Infrastructure
     {
         private readonly EmployeeDbContext _dbContext;
         private readonly EmployeeValidator _employeeValidator;
-       //  private readonly IMapper _mapper;
+        //  private readonly IMapper _mapper;
         public EmployeeRepository(EmployeeDbContext dbContext)
         {
             //_mapper = mapper;
             _dbContext = dbContext;
-            _employeeValidator = new EmployeeValidator(_dbContext);   
+            _employeeValidator = new EmployeeValidator(_dbContext);
         }
         public ResponseModel<Employee> Create(CreateEmployeeDto employeeDto)
         {
@@ -103,7 +103,7 @@ namespace Infrastructure
         public ResponseModel<Employee> Delete(int id)
         {
             var response = new ResponseModel<Employee>();
-            
+
             if (EmployeeExists(id))
             {
                 _dbContext.Employees.Remove(GetEmployee(id));
@@ -113,7 +113,7 @@ namespace Infrastructure
                 return response;
             }
             var employee = _dbContext.Employees.Find(id);
-            response.Data = new List<Employee>{employee};
+            response.Data = new List<Employee> { employee };
             response.Success = true;
             return response;
         }
@@ -121,7 +121,7 @@ namespace Infrastructure
         public ResponseModel<Employee> Get(int id)
         {
             var response = new ResponseModel<Employee>();
-            if ( !EmployeeExists(id))
+            if (!EmployeeExists(id))
             {
                 response = new ResponseModel<Employee>()
                 {
@@ -130,9 +130,9 @@ namespace Infrastructure
                     TotalCount = 0,
                     Error = GetNotFoundError()
                 };
-               return response;
+                return response;
             }
-            response.Data = new List<Employee>(){GetEmployee(id)};
+            response.Data = new List<Employee>() { GetEmployee(id) };
             response.Success = true;
             response.TotalCount = 1;
             response.Error = null;
@@ -149,7 +149,7 @@ namespace Infrastructure
                 .ToList()
             };
             response.Success = response.Data.Count > 0;
-           return response;
+            return response;
         }
 
         public async Task<ResponseModel<Employee>>  Update(Employee UpdatedData)

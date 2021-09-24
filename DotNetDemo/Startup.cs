@@ -1,17 +1,15 @@
+using API.helper;
+using AutoMapper;
+using Contracts;
 using DataModel;
+using Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Microsoft.EntityFrameworkCore;
-using Infrastructure;
-using Contracts;
-using AutoMapper;
-using DataModel.Entity;
-using DataModel.DTO;
-using API.helper;
 
 namespace DotNetDemo
 {
@@ -29,7 +27,8 @@ namespace DotNetDemo
         {
 
             services.AddControllers();
-            var configuration = new MapperConfiguration(cfg => {
+            var configuration = new MapperConfiguration(cfg =>
+            {
                 cfg.AddProfile<MappingProfile>();
 
             });
@@ -45,9 +44,9 @@ namespace DotNetDemo
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Dot Net Demo", Version = "v1", Contact= new OpenApiContact() {Name="Back end team" }, Description="This is demo api project" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Dot Net Demo", Version = "v1", Contact = new OpenApiContact() { Name = "Back end team" }, Description = "This is demo api project" });
             });
-         
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
