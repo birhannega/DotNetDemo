@@ -73,14 +73,14 @@ namespace Infrastructure
                         _dbContext.Add(newEmployee);
                         _dbContext.SaveChanges();
 
-             
-                        // updating employee Address value with the new Address Id
-                        //var employeeToBeUpdated = GetEmployee(newEmployee.Id);
 
-                        //employeeToBeUpdated.AddressId = empAdress.AddressId;
-                        //_dbContext.Employees.Update(employeeToBeUpdated);
-                        //_dbContext.SaveChangesAsync();
-                    
+                    // updating employee Address value with the new Address Id
+                    //var employeeToBeUpdated = GetEmployee(newEmployee.Id);
+
+                    //employeeToBeUpdated.AddressId = empAdress.AddressId;
+                    //_dbContext.Employees.Update(employeeToBeUpdated);
+                    //_dbContext.SaveChangesAsync();
+
                         response.Success = true;
                         response.Error = null;
                         response.TotalCount = 1;
